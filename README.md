@@ -119,6 +119,19 @@ The frontend is intentionally decoupled from any specific backend:
 - JSON-LD `Product` structured data on product pages.
 - Clean URLs: `/shop`, `/shop/audi`, `/product/audi-rs-carbon`, `/custom`, etc.
 
+## Fonts
+
+Fonts are **self-hosted** via `next/font/local` (`app/fonts/*.ttf`, wired up in `app/layout.tsx`)
+rather than fetched from Google Fonts at build time via `next/font/google`. This is deliberate:
+`next/font/google` makes a live network call to `fonts.googleapis.com` during `next build`, and if
+that call stalls in a given build environment, the build can hang with no visible error. Self-hosting
+removes that dependency entirely — the build never touches the network for fonts.
+
+The three files are the official variable-font builds from Google's own `google/fonts` GitHub repo
+(Big Shoulders Display, Inter, JetBrains Mono), all licensed under the SIL Open Font License 1.1 —
+license texts are in `/THIRD_PARTY_LICENSES`. To swap in a different typeface, drop a `.ttf`/`.woff2`
+into `app/fonts/` and update the `localFont()` calls in `app/layout.tsx`.
+
 ## Regenerating placeholder images
 
 ```bash
